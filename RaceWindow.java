@@ -1,48 +1,72 @@
-import se.lth.cs.pt.window.SimpleWindow;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
+public class RaceWindow extends JFrame {
+    public static final int X_START_POS = 100;
+    public static final int X_END_POS = 700;
+    public static final int Y_LINE_START = 100;
+    public static final int Y_LINE_END = 280;
 
-public class RaceWindow extends SimpleWindow {
-	public static final int X_START_POS = 100;
-	public static final int X_END_POS = 700;
-	public static final int Y_LINE_START = 100;
-	public static final int Y_LINE_END = 280;
-	
-	public RaceWindow() {
-		super(800, 400, "Race Window");
-		setUp();
-	}
-	
-	private void setUp(){
-		super.moveTo(X_START_POS-10, Y_LINE_START+24);
-		super.writeText("1");
-		super.moveTo(X_START_POS-10, Y_LINE_START+44);
-		super.writeText("2");
-		super.moveTo(X_START_POS-10, Y_LINE_START+64);
-		super.writeText("3");
-		super.moveTo(X_START_POS-10, Y_LINE_START+84);
-		super.writeText("4");
-		super.moveTo(X_START_POS-10, Y_LINE_START+105);
-		super.writeText("5");
-		super.moveTo(X_START_POS-10, Y_LINE_START+124);
-		super.writeText("6");
-		super.moveTo(X_START_POS-10, Y_LINE_START+144);
-		super.writeText("7");
-		super.moveTo(X_START_POS-10, Y_LINE_START+164);
-		super.writeText("8");
-			
-		super.moveTo(X_START_POS, Y_LINE_START);
-		super.lineTo(X_START_POS, Y_LINE_END);
-		
-		super.moveTo(X_END_POS, Y_LINE_START);
-		super.lineTo(X_END_POS, Y_LINE_END);
-	}
-	
-	public static int getStartXPos(int startNbr){
-		return X_START_POS;
-	}
+    private boolean mouseClicked = false;
 
-	public static int getStartYPos(int startNbr){
-		return Y_LINE_START + startNbr*20;
-	}
+    public RaceWindow() {
+        super("Race Window");
+        setSize(800, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setVisible(true);
+
+        // Add mouse listener to detect clicks
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                mouseClicked = true;
+            }
+        });
+    }
+
+    public void drawStartAndFinishLines(Graphics g) {
+        g.setColor(Color.BLACK);
+
+        // Draw starting positions
+        for (int i = 1; i <= 8; i++) {
+            g.drawString(String.valueOf(i), X_START_POS - 20, Y_LINE_START + i * 20);
+        }
+
+        // Draw start line
+        g.drawLine(X_START_POS, Y_LINE_START, X_START_POS, Y_LINE_END);
+
+        // Draw finish line
+        g.drawLine(X_END_POS, Y_LINE_START, X_END_POS, Y_LINE_END);
+    }
+
+    public void waitForMouseClick() {
+        while (!mouseClicked) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        mouseClicked = false; // Reset for future use
+    }
+
+    public static int getStartXPos(int startNbr) {
+        return X_START_POS;
+    }
+
+    public static int getStartYPos(int startNbr) {
+        return Y_LINE_START + startNbr * 20;
+    }
+
+    // Add this method to RaceWindow.java
+    public static void delay(int ms) {
+        try {
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
 }
 

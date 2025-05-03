@@ -1,35 +1,45 @@
+import java.awt.*;
 import java.util.Random;
 
-public class RaceTurtle extends Turtle {
-	private int nbr;
-	private static Random rand = new Random();
+public class RaceTurtle {
+    private static final int MAX_STEP = 6; // Maximum step size
+    private int number;
+    private int x, y;
+    private boolean penDown = true;
+    protected static final Random rand = new Random(); // Shared Random instance
+    private RaceWindow window;
 
-	/**
-	 * Skapar en sköldpadda som ska springa i fönstret w och som har ett startnummer
-	 * nbr. Sköldpaddan startar med pennan nere och nosen vänd åt höger.
-	 */
-	public RaceTurtle(RaceWindow w, int nbr) {
-		super(w, RaceWindow.getStartXPos(nbr), RaceWindow.getStartYPos(nbr));
-		this.penDown();
-		super.left(-90);
-		this.nbr = nbr;
-	}
+    public RaceTurtle(RaceWindow window, int number) {
+        this.window = window;
+        this.number = number;
+        this.x = RaceWindow.getStartXPos(number);
+        this.y = RaceWindow.getStartYPos(number);
+    }
 
-	/**
-	 * Låter sköldpaddan gå framåt ett steg. Stegets längd ges av ett slumptal
-	 * (heltal) mellan 1 och 6.
-	 */
-	public void raceStep() {
-		int nbr = rand.nextInt(6) + 1;
-		super.forward(nbr);
-	}
+    public void raceStep() {
+        int step = rand.nextInt(MAX_STEP) + 1; // Use constant for max step
+        if (penDown) {
+            Graphics g = window.getGraphics();
+            g.setColor(Color.BLUE);
+            g.drawLine(x, y, x + step, y);
+        }
+        x += step;
+    }
 
-	/**
-	 * Returnerar en läsbar representation av denna RaceTurtle, på formen "Nummer x"
-	 * där x är sköldpaddans startnummer.
-	 */
-	public String toString() {
-		return ("Nummer " + nbr);
-	}
+    public int getX() {
+        return x;
+    }
 
+    @Override
+    public String toString() {
+        return "Number " + number;
+    }
+
+    public void penDown() {
+        penDown = true;
+    }
+
+    public void penUp() {
+        penDown = false;
+    }
 }

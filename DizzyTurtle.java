@@ -1,23 +1,26 @@
 import java.util.Random;
 
 public class DizzyTurtle extends RaceTurtle {
-	private int r; // Sköldpaddans yrselgrad (från 1 till 5).
-	private static Random rand = new Random();
+    private int dizzinessLevel; // Dizziness level (1 to 5)
 
-	public DizzyTurtle(RaceWindow w, int nbr, int r) {
-		super(w, nbr);
-		// ngt felmeddelande om r < 1 || r > 5
-		this.r = r;
-	}
+    public DizzyTurtle(RaceWindow window, int number, int dizzinessLevel) {
+        super(window, number);
+        if (dizzinessLevel < 1 || dizzinessLevel > 5) {
+            throw new IllegalArgumentException("Dizziness level must be between 1 and 5.");
+        }
+        this.dizzinessLevel = dizzinessLevel;
+    }
 
-	/**  raceStep */
-	public void raceStep() {
-		int nbr = rand.nextInt(r) - 2;
-		super.left(nbr * 10);
-		super.raceStep();
-		super.left(nbr * -10);
-	}
+    @Override
+    public void raceStep() {
+        int randomTurn = rand.nextInt(dizzinessLevel) - 2; // Use shared Random instance from RaceTurtle
+        super.left(randomTurn * 10);
+        super.raceStep();
+        super.left(-randomTurn * 10);
+    }
 
-/** Returnerar en läsbar rad med sköldpaddans typ och nummer. */
-	public String toString() {
-		return (super.toString() + " - DizzyTurtle (Yrsel: " + r + ")"); } }
+    @Override
+    public String toString() {
+        return super.toString() + " - DizzyTurtle (Dizziness: " + dizzinessLevel + ")";
+    }
+}
