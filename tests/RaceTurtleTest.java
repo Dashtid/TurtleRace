@@ -16,6 +16,6 @@ public class RaceTurtleTest {
             RaceWindow.delay(10);
         }
 
-        System.out.println("I mål!");
+        System.out.println("Finished!");
     }
 }

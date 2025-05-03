@@ -1,4 +1,7 @@
 package turtles;
+
+import race.RaceWindow;
+
 /**
  * Represents a turtle that occasionally forgets to move forward based on its absent-mindedness level.
  */

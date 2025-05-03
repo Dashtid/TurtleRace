@@ -26,8 +26,10 @@ public class RaceTurtle {
         int step = rand.nextInt(MAX_STEP) + 1; // Use constant for max step
         if (penDown) {
             Graphics g = window.getGraphics();
-            g.setColor(Color.BLUE);
-            g.drawLine(x, y, x + step, y);
+            if (g != null) { // Ensure Graphics object is not null
+                g.setColor(Color.BLUE);
+                g.drawLine(x, y, x + step, y);
+            }
         }
         x += step;
     }
